@@ -58,3 +58,18 @@ const xform = doubleEvens(arrayConcat)
  */
 
 ;[1, 2, 3, 4, 5, 6].reduce((a, c) => isEven(c) ? a.concat(double(c)) : a, []) // [4, 8, 12]
+
+
+const curry = (fn) => {
+
+  return fn.length === 0
+    ? fn()
+    : (...args) => curry(fn.bind(null, ...args))
+}
+
+const transduce = curry((step, initial, xform, foldable) =>
+  foldable.reduce(xform(step), initial)
+)
+
+const toArray = transduce(arrayConcat, [])
+console.log(toArray(doubleEvens, [1, 2, 3, 4, 5, 6]))
